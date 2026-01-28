@@ -2,190 +2,127 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Curriculum Vitae</title>
     <style>
-        /* CONFIGURACIÓN DEL DOCUMENTO */
         @page {
             size: A4;
-            margin: 0;
+            margin: 1.5cm;
         }
         body {
-            font-family: 'Helvetica', Arial, sans-serif;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.4;
             margin: 0;
             padding: 0;
-            color: #1a1a1a;
-            line-height: 1.0; /* Interlineado mínimo para pegar el texto */
         }
-
-        /* ESTRUCTURA PRINCIPAL */
-        .master-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        /* COLUMNA IZQUIERDA */
-        .sidebar {
-            width: 30%;
-            border-right: 2px solid #2563eb;
-            padding: 30px 20px;
-            vertical-align: top;
-            background-color: #ffffff;
-        }
-
-        /* FOTO SIN MARCO */
-        .foto-container {
-            width: 140px;
-            height: 170px;
-            overflow: hidden;
+        /* Encabezado Principal */
+        .header {
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
-        .foto-img {
-            width: 100%;
-            height: 100%;
-            display: block;
+        .foto {
+            float: right;
+            width: 110px;
+            height: 140px;
+            border: 1px solid #ccc;
+            object-fit: cover;
         }
-
-        /* DATOS PERSONALES (MUY JUNTOS) */
-        .section-header {
-            color: #2563eb;
-            font-size: 11px;
-            font-weight: bold;
+        .nombre {
+            font-size: 26pt;
+            color: #1e3a8a;
+            margin: 0;
             text-transform: uppercase;
-            margin: 15px 0 5px 0;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 2px;
+        }
+        .subtitulo {
+            font-size: 14pt;
+            color: #666;
+            margin: 5px 0;
         }
 
-        .data-label {
-            font-size: 7.5px;
-            color: #6b7280;
-            font-weight: bold;
-            display: block;
-            margin: 0;
-        }
-
-        .data-value {
-            font-size: 10px;
-            color: #000;
-            display: block;
-            margin: 0 0 6px 0; /* Pequeño margen solo entre grupos */
-        }
-
-        /* COLUMNA DERECHA */
-        .main-content {
-            width: 70%;
-            padding: 40px 30px;
-            vertical-align: top;
-        }
-
-        .nombre-cv {
-            font-size: 26px;
-            font-weight: bold;
-            margin: 0;
-            color: #000;
-        }
-
-        .subtitulo-cv {
+        /* Estilo de Secciones */
+        .titulo-seccion {
+            background: #f0f4ff;
             color: #2563eb;
-            font-size: 13px;
+            padding: 6px 12px;
             font-weight: bold;
-            margin: 4px 0 30px 0;
+            font-size: 12pt;
+            margin-top: 20px;
+            text-transform: uppercase;
+            border-left: 5px solid #2563eb;
         }
 
-        .main-section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
-            margin: 25px 0 10px 0;
-            padding-bottom: 3px;
-        }
-
-        .item-box { margin-bottom: 12px; }
-        .item-titulo { font-size: 12px; font-weight: bold; margin: 0; }
-        .item-sub { font-size: 9.5px; color: #4b5563; margin-top: 2px; }
-
-        /* ESTILO PARA IMÁGENES DE CERTIFICADOS */
-        .certificado-img {
+        /* Tabla de Datos Personales */
+        .tabla-datos {
             width: 100%;
+            border-collapse: collapse;
             margin-top: 10px;
-            border: 1px solid #ddd;
+        }
+        .tabla-datos td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 10pt;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+            width: 180px;
+        }
+        .valor {
+            color: #000;
+        }
+
+        /* Limpiar flotados */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
         }
     </style>
 </head>
 <body>
 
-    <table class="master-table">
+    <div class="header clearfix">
+        {% if perfil.foto %}
+            <img src="{{ perfil.foto.path }}" class="foto">
+        {% endif %}
+        <h1 class="nombre">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+        <p class="subtitulo">Hoja de Vida Profesional</p>
+    </div>
+
+    <div class="titulo-seccion">Datos Personales</div>
+    <table class="tabla-datos">
         <tr>
-            <td class="sidebar">
-                <div class="foto-container">
-                    {% if perfil.foto %}
-                        <img src="{{ perfil.foto.path }}" class="foto-img">
-                    {% else %}
-                        <div style="text-align: center; color: #ccc; padding-top: 70px; border: 1px dashed #ccc; height: 100%;">SIN FOTO</div>
-                    {% endif %}
-                </div>
-
-                <div class="section-header">Identidad</div>
-                
-                <span class="data-label">CÉDULA</span>
-                <span class="data-value">{{ perfil.cedula|default:"-" }}</span>
-
-                <span class="data-label">NACIONALIDAD</span>
-                <span class="data-value">{{ perfil.nacionalidad|default:"Ecuatoriana" }}</span>
-
-                <span class="data-label">ESTADO CIVIL</span>
-                <span class="data-value">{{ perfil.estado_civil|default:"-" }}</span>
-
-                <div class="section-header">Contacto</div>
-
-                <span class="data-label">TELÉFONO</span>
-                <span class="data-value">{{ perfil.telefono|default:"-" }}</span>
-
-                <span class="data-label">EMAIL</span>
-                <span class="data-value" style="font-size: 8.5px;">{{ perfil.email|default:"-" }}</span>
-            </td>
-
-            <td class="main-content">
-                <h1 class="nombre-cv">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
-                <div class="subtitulo-cv">HOJA DE VIDA PROFESIONAL</div>
-
-                <div class="main-section-title">Experiencia Laboral</div>
-                {% for exp in experiencias %}
-                <div class="item-box">
-                    <div class="item-titulo">{{ exp.cargo }}</div>
-                    <div class="item-sub">{{ exp.empresa }} | {{ exp.fecha_inicio|date:"Y" }} - {% if exp.actualmente %}Actualidad{% else %}{{ exp.fecha_fin|date:"Y" }}{% endif %}</div>
-                </div>
-                {% endfor %}
-
-                <div class="main-section-title">Educación</div>
-                {% for est in estudios %}
-                <div class="item-box">
-                    <div class="item-titulo">{{ est.titulo_obtenido }}</div>
-                    <div class="item-sub">{{ est.institucion }} | {{ est.fecha_fin|date:"Y" }}</div>
-                </div>
-                {% endfor %}
-
-                <div class="main-section-title">Certificados</div>
-                {% for cur in cursos %}
-                <div class="item-box">
-                    <div class="item-titulo">{{ cur.nombre_curso }}</div>
-                    <div class="item-sub">{{ cur.institucion }} ({{ cur.horas }}h)</div>
-                </div>
-                {% endfor %}
-            </td>
+            <td class="label">Número de Cédula:</td>
+            <td class="valor">{{ perfil.cedula|default:"N/A" }}</td>
         </tr>
+        <tr>
+            <td class="label">Nacionalidad:</td>
+            <td class="valor">{{ perfil.nacionalidad|default:"Ecuatoriana" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Estado Civil:</td>
+            <td class="valor">{{ perfil.estado_civil|default:"N/A" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Licencia de Conducir:</td>
+            <td class="valor">{{ perfil.licencia_conducir|default:"N/A" }}</td>
+        </tr>
+        <tr>
+            <td class="label">WhatsApp / Celular:</td>
+            <td class="valor">{{ perfil.telefono|default:"N/A" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Correo Electrónico:</td>
+            <td class="valor">{{ perfil.email|default:"N/A" }}</td>
+        </tr>
+        {% if perfil.direccion %}
+        <tr>
+            <td class="label">Dirección Domiciliaria:</td>
+            <td class="valor">{{ perfil.direccion }}</td>
+        </tr>
+        {% endif %}
     </table>
 
-    {% for cur in cursos %}
-        {% if cur.certificado_pdf %}
-            <div style="pdf-next-page: always;"></div>
-            <div style="padding: 40px; text-align: center;">
-                <h2 style="color: #2563eb;">Certificado: {{ cur.nombre_curso }}</h2>
-                <img src="{{ cur.certificado_pdf.path }}" class="certificado-img">
-            </div>
-        {% endif %}
-    {% endfor %}
-
-</body>
+    </body>
 </html>

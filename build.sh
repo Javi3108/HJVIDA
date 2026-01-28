@@ -9,6 +9,6 @@ python manage.py migrate
 echo "Asegurando superusuario..."
 echo "from django.contrib.auth import get_user_model; \
 User = get_user_model(); \
-User.objects.filter(username='Alejandro').exists() or \
-User.objects.create_superuser('Alejandro', 'tu-correo@gmail.com', 'TuClaveSegura123')" \
+User.objects.filter(username='javier').exists() or \
+User.objects.create_superuser('javier', 'javierapo152@gmail.com', 'javier123')" \
 | python manage.py shell

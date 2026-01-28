@@ -5,110 +5,150 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-    .cv-container {
-        max-width: 850px;
-        margin: 30px auto;
+    /* Contenedor de la tarjeta principal */
+    .perfil-card {
+        max-width: 800px;
+        margin: 40px auto;
         background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        padding: 0;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         overflow: hidden;
+        border: 1px solid #eef2f3;
     }
-    .header-banner {
-        background: #2563eb;
-        color: white;
-        padding: 20px 30px;
+
+    /* Columna de la foto */
+    .foto-seccion {
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        border-right: 1px solid #eef2f3;
     }
+
+    .foto-perfil {
+        width: 180px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 5px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Tabla de datos compacta */
+    .datos-seccion {
+        padding: 40px;
+    }
+
+    .titulo-perfil {
+        color: #1e3a8a;
+        font-weight: 700;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #2563eb;
+        display: inline-block;
+    }
+
     .tabla-datos {
         width: 100%;
         border-collapse: collapse;
     }
+
     .tabla-datos td {
-        padding: 10px 15px;
-        border-bottom: 1px solid #f0f2f5;
+        padding: 10px 5px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
     }
-    .label-mini {
+
+    .label-dato {
         color: #64748b;
         font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
-        width: 200px;
+        width: 160px;
     }
-    .dato-texto {
+
+    .valor-dato {
         color: #1e293b;
         font-size: 1rem;
         font-weight: 500;
     }
-    .foto-perfil {
-        width: 100%;
-        max-width: 200px;
-        height: 240px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 4px solid #fff;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    .valor-dato i {
+        color: #2563eb;
+        margin-right: 8px;
+        width: 20px;
+        text-align: center;
     }
-    .btn-descarga {
+
+    /* Botón de descarga */
+    .btn-generar {
         background: #2563eb;
         color: white;
-        padding: 10px 25px;
+        padding: 12px 25px;
         border-radius: 8px;
         text-decoration: none;
-        display: inline-block;
         font-weight: 600;
-        margin-top: 20px;
+        display: inline-block;
+        transition: 0.3s;
+        margin-top: 25px;
+    }
+
+    .btn-generar:hover {
+        background: #1e40af;
+        transform: translateY(-2px);
+        color: white;
     }
 </style>
 
 <div class="container">
-    <div class="cv-container">
-        <div class="header-banner">
-            <h2 class="m-0">{{ perfil.nombres }} {{ perfil.apellidos }}</h2>
-            <p class="m-0 opacity-75">Información de Perfil</p>
-        </div>
-
-        <div class="row g-0 p-4 align-items-center">
-            <div class="col-md-4 text-center">
+    <div class="perfil-card">
+        <div class="row g-0 align-items-center">
+            <div class="col-md-4 foto-seccion">
                 {% if perfil.foto %}
-                    <img src="{{ perfil.foto.url }}" class="foto-perfil">
+                    <img src="{{ perfil.foto.url }}" class="foto-perfil" alt="Foto de {{ perfil.nombres }}">
                 {% else %}
-                    <div class="foto-perfil bg-light d-flex align-items-center justify-content-center mx-auto">
-                        <i class="fas fa-user fa-4x text-muted"></i>
+                    <div class="foto-perfil bg-secondary d-flex flex-column align-items-center justify-content-center text-white">
+                        <i class="fas fa-user-tie fa-4x mb-2"></i>
+                        <span>SIN FOTO</span>
                     </div>
                 {% endif %}
+                <h5 class="mt-3 text-center fw-bold">{{ perfil.nombres }}</h5>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-8 datos-seccion">
+                <h3 class="titulo-perfil">Datos Personales</h3>
+                
                 <table class="tabla-datos">
                     <tr>
-                        <td class="label-mini"><i class="fas fa-id-card me-2"></i> Cédula</td>
-                        <td class="dato-texto">{{ perfil.cedula|default:"N/A" }}</td>
+                        <td class="label-dato">Cédula</td>
+                        <td class="valor-dato"><i class="fas fa-id-card"></i> {{ perfil.cedula|default:"N/A" }}</td>
                     </tr>
                     <tr>
-                        <td class="label-mini"><i class="fas fa-flag me-2"></i> Nacionalidad</td>
-                        <td class="dato-texto">{{ perfil.nacionalidad|default:"N/A" }}</td>
+                        <td class="label-dato">Nacionalidad</td>
+                        <td class="valor-dato"><i class="fas fa-flag"></i> {{ perfil.nacionalidad|default:"Ecuatoriana" }}</td>
                     </tr>
                     <tr>
-                        <td class="label-mini"><i class="fas fa-heart me-2"></i> Estado Civil</td>
-                        <td class="dato-texto">{{ perfil.estado_civil|default:"N/A" }}</td>
+                        <td class="label-dato">Estado Civil</td>
+                        <td class="valor-dato"><i class="fas fa-heart"></i> {{ perfil.estado_civil|default:"N/A" }}</td>
                     </tr>
                     <tr>
-                        <td class="label-mini"><i class="fas fa-car me-2"></i> Licencia</td>
-                        <td class="dato-texto">{{ perfil.licencia_conducir|default:"N/A" }}</td>
+                        <td class="label-dato">Licencia</td>
+                        <td class="valor-dato"><i class="fas fa-car"></i> {{ perfil.licencia_conducir|default:"N/A" }}</td>
                     </tr>
                     <tr>
-                        <td class="label-mini"><i class="fab fa-whatsapp me-2"></i> WhatsApp</td>
-                        <td class="dato-texto">{{ perfil.telefono|default:"N/A" }}</td>
+                        <td class="label-dato">WhatsApp</td>
+                        <td class="valor-dato"><i class="fab fa-whatsapp"></i> {{ perfil.telefono|default:"N/A" }}</td>
                     </tr>
                     <tr>
-                        <td class="label-mini"><i class="fas fa-envelope me-2"></i> Correo</td>
-                        <td class="dato-texto">{{ perfil.email|default:"N/A" }}</td>
+                        <td class="label-dato">Email</td>
+                        <td class="valor-dato"><i class="fas fa-envelope"></i> {{ perfil.email|default:"N/A" }}</td>
                     </tr>
                 </table>
 
                 <div class="text-end">
-                    <a href="{% url 'generar_cv' %}" class="btn-descarga">
-                        <i class="fas fa-file-pdf me-2"></i> Descargar CV
+                    <a href="{% url 'generar_cv' %}" class="btn-generar">
+                        <i class="fas fa-file-pdf me-2"></i> Generar Hoja de Vida
                     </a>
                 </div>
             </div>
