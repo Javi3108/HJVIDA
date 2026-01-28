@@ -2,95 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Curriculum Vitae</title>
     <style>
-        @page {
-            size: A4;
-            margin: 1.5cm;
-        }
-        body {
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #333;
-            line-height: 1.4;
-            margin: 0;
-            padding: 0;
-        }
-        /* Encabezado Principal */
-        .header {
-            border-bottom: 3px solid #2563eb;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .foto {
-            float: right;
-            width: 110px;
-            height: 140px;
-            border: 1px solid #ccc;
-            object-fit: cover;
-        }
-        .nombre {
-            font-size: 26pt;
-            color: #1e3a8a;
-            margin: 0;
-            text-transform: uppercase;
-        }
-        .subtitulo {
-            font-size: 14pt;
-            color: #666;
-            margin: 5px 0;
-        }
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: 'Helvetica', Arial, sans-serif; color: #333; line-height: 1.2; }
+        
+        /* Encabezado */
+        .header-table { width: 100%; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 20px; }
+        .foto { width: 120px; height: 150px; border: 1px solid #ccc; object-fit: cover; }
+        .titulo-cv { font-size: 22pt; color: #666; font-weight: normal; margin: 0; }
 
-        /* Estilo de Secciones */
-        .titulo-seccion {
-            background: #f0f4ff;
-            color: #2563eb;
-            padding: 6px 12px;
-            font-weight: bold;
+        /* SECCIÓN DE DATOS PERSONALES SIN ESPACIOS */
+        .seccion-titulo { 
+            background: #f0f4ff; 
+            color: #2563eb; 
+            padding: 5px 10px; 
+            font-weight: bold; 
             font-size: 12pt;
-            margin-top: 20px;
-            text-transform: uppercase;
             border-left: 5px solid #2563eb;
-        }
-
-        /* Tabla de Datos Personales */
-        .tabla-datos {
-            width: 100%;
-            border-collapse: collapse;
             margin-top: 10px;
         }
-        .tabla-datos td {
-            padding: 6px 8px;
-            border-bottom: 1px solid #eee;
+
+        .tabla-datos { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .tabla-datos td { 
+            padding: 4px 8px; /* Controla el espacio vertical entre datos */
+            border-bottom: 1px solid #eee; 
             font-size: 10pt;
         }
-        .label {
-            font-weight: bold;
-            color: #555;
-            width: 180px;
-        }
-        .valor {
-            color: #000;
-        }
+        .label { font-weight: bold; width: 180px; color: #555; }
+        .valor { color: #000; }
 
-        /* Limpiar flotados */
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
+        /* Estilos para el resto del CV (se mantienen como estaban) */
+        .resto-seccion { margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="header clearfix">
-        {% if perfil.foto %}
-            <img src="{{ perfil.foto.path }}" class="foto">
-        {% endif %}
-        <h1 class="nombre">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
-        <p class="subtitulo">Hoja de Vida Profesional</p>
-    </div>
+    <table class="header-table">
+        <tr>
+            <td style="width: 150px;">
+                {% if perfil.foto %}
+                    <img src="{{ perfil.foto.path }}" class="foto">
+                {% else %}
+                    <div style="width:120px; height:150px; background:#eee; text-align:center; padding-top:60px; font-size:10pt;">SIN FOTO</div>
+                {% endif %}
+            </td>
+            <td style="vertical-align: middle; padding-left: 20px;">
+                <h1 class="titulo-cv">Hoja de Vida Profesional</h1>
+                <h2 style="margin: 5px 0; color: #2563eb;">{{ perfil.nombres }} {{ perfil.apellidos }}</h2>
+            </td>
+        </tr>
+    </table>
 
-    <div class="titulo-seccion">Datos Personales</div>
+    <div class="seccion-titulo">Datos Personales</div>
     <table class="tabla-datos">
         <tr>
             <td class="label">Número de Cédula:</td>
@@ -116,13 +79,10 @@
             <td class="label">Correo Electrónico:</td>
             <td class="valor">{{ perfil.email|default:"N/A" }}</td>
         </tr>
-        {% if perfil.direccion %}
-        <tr>
-            <td class="label">Dirección Domiciliaria:</td>
-            <td class="valor">{{ perfil.direccion }}</td>
-        </tr>
-        {% endif %}
     </table>
 
-    </body>
+    <div class="resto-seccion">
+        </div>
+
+</body>
 </html>
