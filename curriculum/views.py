@@ -1,201 +1,104 @@
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils import timezone
-from datetime import date
+import os
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.conf import settings
 
-# --- VALIDADORES ---
+# Importación de tus modelos
+from .models import (
+    DatosPersonales, 
+    ExperienciaLaboral, 
+    EstudioRealizado, 
+    CursoCapacitacion, 
+    Reconocimiento, 
+    ProductoAcademico, 
+    VentaGarage
+)
 
-def validar_no_futuro(value):
-    """Evita que se ingresen fechas posteriores a hoy."""
-    if value > date.today():
-        raise ValidationError('La fecha no puede estar en el futuro.')
+def inicio(request):
+    """Vista para la página de inicio."""
+    perfil = DatosPersonales.objects.first()
+    return render(request, 'curriculum/inicio.html', {'perfil': perfil})
 
-def validar_fecha_nacimiento(value):
-    """Valida que el año de nacimiento sea lógico (1900-Hoy)."""
-    if value.year < 1900:
-        raise ValidationError('Por favor, ingresa un año posterior a 1900.')
-    if value > date.today():
-        raise ValidationError('La fecha de nacimiento no puede ser futura.')
+def perfil(request):
+    """Vista para los datos personales."""
+    perfil_data = DatosPersonales.objects.first()
+    return render(request, 'curriculum/datos_personales.html', {'perfil': perfil_data})
 
-# --- MODELOS DE APOYO ---
+def experiencia(request):
+    """Vista para la trayectoria profesional."""
+    experiencias = ExperienciaLaboral.objects.filter(activo=True).order_by('-fecha_inicio')
+    return render(request, 'curriculum/experiencia.html', {'experiencias': experiencias})
 
-class CategoriaTag(models.Model):
-    """Sistema de etiquetas para clasificar productos académicos."""
-    nombre = models.CharField(max_length=50, unique=True)
+def educacion(request):
+    """Vista para formación académica."""
+    estudios = EstudioRealizado.objects.filter(activo=True).order_by('-fecha_fin')
+    return render(request, 'curriculum/educacion.html', {'estudios': estudios})
 
-    class Meta:
-        verbose_name = "Etiqueta de Clasificación"
-        verbose_name_plural = "Etiquetas de Clasificación"
+def cursos(request):
+    """Vista para cursos y certificaciones."""
+    cursos_list = CursoCapacitacion.objects.filter(activo=True).order_by('-fecha_realizacion')
+    return render(request, 'curriculum/cursos.html', {'cursos': cursos_list})
 
-    def __str__(self):
-        return self.nombre
+def reconocimientos(request):
+    """Vista para premios y reconocimientos."""
+    logros = Reconocimiento.objects.filter(activo=True).order_by('-fecha_obtencion')
+    return render(request, 'curriculum/reconocimientos.html', {'reconocimientos': logros})
 
-# --- MODELOS PRINCIPALES ---
+def trabajos(request):
+    """Vista para productos académicos/proyectos."""
+    proyectos = ProductoAcademico.objects.filter(activo=True).order_by('-fecha_publicacion')
+    return render(request, 'curriculum/proyectos.html', {'trabajos': proyectos})
 
-class DatosPersonales(models.Model):
-    SEXO_CHOICES = [('Mujer', 'Mujer'), ('Hombre', 'Hombre'), ('Otro', 'Otro')]
-    ESTADO_CIVIL_CHOICES = [
-        ('Soltera/o', 'Soltera/o'), ('Casada/o', 'Casada/o'),
-        ('Divorciada/o', 'Divorciada/o'), ('Viuda/o', 'Viuda/o'),
-        ('Unión Libre', 'Unión Libre'),
-    ]
+def venta(request):
+    """Vista para el Marketplace/Venta de Garage."""
+    productos = VentaGarage.objects.filter(activo=True)
+    perfil = DatosPersonales.objects.first()
+    return render(request, 'curriculum/venta.html', {'productos': productos, 'perfil': perfil})
 
-    cedula = models.CharField(max_length=13, verbose_name="Cédula / ID")
-    nombres = models.CharField(max_length=100)
-    apellidos = models.CharField(max_length=100)
-    sexo = models.CharField(max_length=20, choices=SEXO_CHOICES)
-    estado_civil = models.CharField(max_length=30, choices=ESTADO_CIVIL_CHOICES)
-    nacionalidad = models.CharField(max_length=50, default="Ecuatoriana")
-    lugar_nacimiento = models.CharField(max_length=100, default="No especificado")
-    fecha_nacimiento = models.DateField(null=True, blank=True, validators=[validar_fecha_nacimiento])
+def contacto(request):
+    """Vista para información de contacto."""
+    perfil = DatosPersonales.objects.first()
+    return render(request, 'curriculum/contacto.html', {'perfil': perfil})
+
+def seleccionar_cv(request):
+    """Vista para la interfaz de selección de secciones para el PDF."""
+    return render(request, 'curriculum/seleccionar_pdf.html')
+
+def generar_cv(request):
+    """Genera el PDF dinámico con todas las secciones corregidas."""
+    perfil = DatosPersonales.objects.first()
     
-    telefono = models.CharField(max_length=15, verbose_name="Teléfono Celular")
-    telefono_convencional = models.CharField(max_length=15, null=True, blank=True)
-    email = models.EmailField(verbose_name="Correo Electrónico")
-    sitio_web = models.URLField(null=True, blank=True)
-    direccion = models.TextField(verbose_name="Dirección Domiciliaria")
-    foto = models.ImageField(upload_to='perfil/', null=True, blank=True)
-    descripcion_perfil = models.TextField(null=True, blank=True, verbose_name="Perfil Profesional (Bio)")
+    # Captura de checkboxes desde el formulario (seleccionar_pdf.html)
+    ver_exp = request.GET.get('ver_experiencia') == 'on'
+    ver_edu = request.GET.get('ver_educacion') == 'on'
+    ver_cur = request.GET.get('ver_cursos') == 'on'
+    ver_log = request.GET.get('ver_logros') == 'on'
+    ver_pro = request.GET.get('ver_proyectos') == 'on'
+
+    # Preparar el contexto sincronizado con la plantilla cv_pdf.html
+    context = {
+        'perfil': perfil,
+        'experiencias': ExperienciaLaboral.objects.filter(activo=True).order_by('-fecha_inicio') if ver_exp else [],
+        'estudios': EstudioRealizado.objects.filter(activo=True).order_by('-fecha_fin') if ver_edu else [],
+        'cursos': CursoCapacitacion.objects.filter(activo=True).order_by('-fecha_realizacion') if ver_cur else [],
+        'logros': Reconocimiento.objects.filter(activo=True).order_by('-fecha_obtencion') if ver_log else [],
+        'proyectos': ProductoAcademico.objects.filter(activo=True).order_by('-fecha_publicacion') if ver_pro else [],
+    }
+
+    # Crear la respuesta PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="CV_Profesional.pdf"'
     
-    url_linkedin = models.URLField(null=True, blank=True)
-    url_github = models.URLField(null=True, blank=True)
-
-    mostrar_seccion = models.BooleanField(default=True, verbose_name="Sección Activa")
-
-    class Meta:
-        verbose_name = "1. Información de Identidad"
-        verbose_name_plural = "1. Información de Identidad"
-
-    def __str__(self):
-        return f"{self.nombres} {self.apellidos}"
-
-class ExperienciaLaboral(models.Model):
-    cargo = models.CharField(max_length=150)
-    empresa = models.CharField(max_length=150)
-    fecha_inicio = models.DateField(validators=[validar_no_futuro])
-    fecha_fin = models.DateField(null=True, blank=True, help_text="Vacío si es Actual", validators=[validar_no_futuro])
-    descripcion = models.TextField()
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = "Experiencia Laboral"
-        verbose_name_plural = "2. Trayectoria Profesional"
-        ordering = ['-fecha_inicio'] 
-
-    def clean(self):
-        if self.fecha_fin and self.fecha_inicio > self.fecha_fin:
-            raise ValidationError({'fecha_fin': 'La fecha de fin no puede ser anterior a la de inicio.'})
-
-    def __str__(self):
-        return f"{self.cargo} - {self.empresa}"
-
-class EstudioRealizado(models.Model):
-    titulo = models.CharField(max_length=200)
-    institucion = models.CharField(max_length=200)
-    fecha_inicio = models.DateField(validators=[validar_no_futuro])
-    fecha_fin = models.DateField(validators=[validar_no_futuro])
-    # Campo para el certificado físico (PDF o Imagen)
-    certificado_pdf = models.FileField(upload_to='educacion/', null=True, blank=True)
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = "Título Académico"
-        verbose_name_plural = "3. Formación Académica"
-        ordering = ['-fecha_fin']
-
-    def clean(self):
-        if self.fecha_inicio > self.fecha_fin:
-            raise ValidationError({'fecha_fin': 'La fecha de graduación no puede ser anterior al inicio.'})
-
-    def __str__(self):
-        return self.titulo
-
-class ProductoAcademico(models.Model):
-    nombre = models.CharField(max_length=200, verbose_name="Nombre del Producto")
-    descripcion = models.TextField(verbose_name="Descripción Detallada")
-    registro_id = models.CharField(max_length=100, null=True, blank=True, verbose_name="ID / Registro de Propiedad")
-    fecha_publicacion = models.DateField(validators=[validar_no_futuro], verbose_name="Fecha de Publicación")
-    archivo = models.FileField(upload_to='academicos/', null=True, blank=True, verbose_name="Documentación (PDF/Zip)")
-    categorias = models.ManyToManyField(CategoriaTag, blank=True, verbose_name="Clasificación (Tags)")
-    activo = models.BooleanField(default=True, verbose_name="Visible en la web")
-
-    @property
-    def tags(self):
-        return self.categorias.all().values_list('nombre', flat=True)
-
-    class Meta:
-        verbose_name = "Producto Académico"
-        verbose_name_plural = "4. Producción Intelectual"
-        ordering = ['-fecha_publicacion']
-
-    def __str__(self):
-        return f"{self.nombre} ({self.registro_id or 'S/N'})"
+    # Cargar y renderizar la plantilla
+    template = get_template('curriculum/cv_pdf.html')
+    html = template.render(context)
     
-class CursoCapacitacion(models.Model):
-    nombre_curso = models.CharField(max_length=200)
-    institucion = models.CharField(max_length=200)
-    fecha_realizacion = models.DateField(validators=[validar_no_futuro], null=True)
-    horas = models.PositiveIntegerField()
-    # NUEVO: Campo para subir el certificado del curso
-    certificado_pdf = models.FileField(upload_to='certificados/', null=True, blank=True)
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = "5. Cursos y Certificaciones"
-        ordering = ['-fecha_realizacion']
-
-    def __str__(self):
-        return self.nombre_curso
-
-class Reconocimiento(models.Model):
-    nombre = models.CharField(max_length=200)
-    institucion = models.CharField(max_length=200)
-    fecha_obtencion = models.DateField(validators=[validar_no_futuro], null=True)
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = "6. Reconocimientos y Premios"
-        ordering = ['-fecha_obtencion']
-
-    def __str__(self):
-        return self.nombre
-
-class VentaGarage(models.Model):
-    ESTADO_CHOICES = [
-        ('Nuevo', 'Nuevo'),
-        ('Bueno', 'Bueno'),
-        ('Regular', 'Regular'),
-    ]
-    nombre_producto = models.CharField(max_length=200)
-    descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES)
-    imagen = models.ImageField(upload_to='venta/', null=True, blank=True)
-    fecha_publicacion = models.DateField(default=timezone.now, validators=[validar_no_futuro])
-    stock = models.PositiveIntegerField(default=1)
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = "7. Venta de Garage"
-        ordering = ['-fecha_publicacion']
-
-    def __str__(self):
-        return self.nombre_producto
-
-class ConfiguracionPagina(models.Model):
-    mostrar_inicio = models.BooleanField(default=True, verbose_name="Mostrar Inicio")
-    mostrar_perfil = models.BooleanField(default=True, verbose_name="Mostrar Perfil (Datos Personales)")
-    mostrar_experiencia = models.BooleanField(default=True, verbose_name="Mostrar Experiencia")
-    mostrar_educacion = models.BooleanField(default=True, verbose_name="Mostrar Educación")
-    mostrar_cursos = models.BooleanField(default=True, verbose_name="Mostrar Cursos")
-    mostrar_logros = models.BooleanField(default=True, verbose_name="Mostrar Logros/Reconocimientos")
-    mostrar_trabajos = models.BooleanField(default=True, verbose_name="Mostrar Trabajos")
-    mostrar_venta = models.BooleanField(default=True, verbose_name="Mostrar Sección Venta")
-    mostrar_contacto = models.BooleanField(default=True, verbose_name="Mostrar Contacto")
-
-    class Meta:
-        verbose_name = "Configuración de Visibilidad"
-        verbose_name_plural = "Configuración de Visibilidad"
-
-    def __str__(self):
-        return "Ajustes de Visibilidad de Secciones"
+    # Crear el PDF usando pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    if pisa_status.err:
+        return HttpResponse('Error técnico al generar el archivo PDF', status=500)
+        
+    return response
