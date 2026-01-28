@@ -1,76 +1,174 @@
 {% extends 'curriculum/base.html' %}
 {% load static %}
 
-{% block title %}Sobre Mí | Javier Parrales{% endblock %}
-
 {% block content %}
-<div class="fade-in px-4 py-12 max-w-5xl mx-auto">
-    <div class="mb-12">
-        <h2 class="text-5xl font-black italic uppercase tracking-tighter text-[#1a1a1a]">
-            SOBRE <span class="text-blue-600">MÍ</span>
-        </h2>
-        <p class="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-2">Perfil Profesional y Detalles de Contacto</p>
-    </div>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 md:flex">
-        <div class="md:w-1/3 bg-blue-50 p-12 text-center border-r border-gray-100">
-            <div class="relative inline-block">
+<style>
+    body {
+        background-color: #f4f7f6;
+        font-family: 'Poppins', sans-serif;
+    }
+    .profile-card {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    .profile-img-container {
+        background: #eef2f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        min-height: 400px;
+    }
+    .profile-img {
+        width: 100%;
+        max-width: 280px;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        border: 5px solid white;
+    }
+    .info-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #95a5a6;
+        margin-bottom: 2px;
+        display: block;
+        letter-spacing: 1px;
+    }
+    .info-value {
+        font-size: 1.05rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .info-value i {
+        color: #2563eb;
+        width: 20px;
+    }
+    .section-title {
+        color: #2563eb;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 4px;
+        background: #2563eb;
+        border-radius: 2px;
+    }
+    .btn-download {
+        background: #2563eb;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .btn-download:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+    }
+</style>
+
+<div class="container">
+    <div class="profile-card mx-auto col-lg-10">
+        <div class="row g-0">
+            <div class="col-md-5 profile-img-container">
                 {% if perfil.foto %}
-                    <img src="{{ perfil.foto.url }}" class="w-48 h-48 rounded-[2.5rem] mx-auto object-cover shadow-xl border-4 border-white">
+                    <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.nombres }}" class="profile-img">
                 {% else %}
-                    <div class="w-48 h-48 rounded-[2.5rem] mx-auto bg-gray-200 flex items-center justify-center border-4 border-white">
-                        <i data-lucide="user" size="60" class="text-gray-400"></i>
+                    <div class="profile-img d-flex flex-column align-items-center justify-content-center bg-secondary text-white">
+                        <i class="fas fa-user fa-5x mb-3"></i>
+                        <span>SIN FOTO</span>
                     </div>
                 {% endif %}
-                <div class="absolute -bottom-2 -right-2 bg-blue-600 text-white p-3 rounded-2xl shadow-lg">
-                    <i data-lucide="check-circle" size="20"></i>
-                </div>
-            </div>
-            
-            <h2 class="mt-8 text-2xl font-black uppercase text-gray-800 leading-none">
-                {{ perfil.nombres }}<br>
-                <span class="text-blue-600">{{ perfil.apellidos }}</span>
-            </h2>
-            <p class="text-gray-400 font-bold text-[9px] tracking-[0.2em] uppercase mt-4">Nacionalidad: {{ perfil.nacionalidad }}</p>
-        </div>
-
-        <div class="md:w-2/3 p-12">
-            <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-8 flex items-center gap-2">
-                <span class="w-8 h-[2px] bg-blue-600"></span> 
-                Información del Sistema
-            </h3>
-            
-            <div class="grid grid-cols-2 gap-y-10 gap-x-8">
-                <div>
-                    <label class="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-tighter">Número de Cédula</label>
-                    <p class="font-bold text-gray-800 text-lg">{{ perfil.cedula }}</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-tighter">Estado Civil</label>
-                    <p class="font-bold text-gray-800 text-lg">{{ perfil.estado_civil }}</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-tighter">WhatsApp / Celular</label>
-                    <p class="font-bold text-blue-600 text-lg">{{ perfil.telefono }}</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-tighter">Correo Electrónico</label>
-                    <p class="font-bold text-gray-800 text-lg">{{ perfil.email }}</p>
-                </div>
             </div>
 
-            <div class="mt-12 p-8 bg-gray-900 rounded-[2rem] relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <i data-lucide="quote" size="60" class="text-white"></i>
+            <div class="col-md-7 p-5">
+                <h2 class="section-title">Información Personal</h2>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <span class="info-label">Nombres Completos</span>
+                        <div class="info-value">
+                            <i class="fas fa-user-circle"></i> 
+                            {{ perfil.nombres }} {{ perfil.apellidos }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <span class="info-label">Cédula de Identidad</span>
+                        <div class="info-value">
+                            <i class="fas fa-id-card"></i> 
+                            {{ perfil.cedula|default:"N/A" }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <span class="info-label">Nacionalidad</span>
+                        <div class="info-value">
+                            <i class="fas fa-globe-americas"></i> 
+                            {{ perfil.nacionalidad|default:"N/A" }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <span class="info-label">Estado Civil</span>
+                        <div class="info-value">
+                            <i class="fas fa-heart"></i> 
+                            {{ perfil.estado_civil|default:"N/A" }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <span class="info-label">Licencia de Conducir</span>
+                        <div class="info-value">
+                            <i class="fas fa-car"></i> 
+                            {{ perfil.licencia_conducir|default:"N/A" }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <span class="info-label">Teléfono / WhatsApp</span>
+                        <div class="info-value">
+                            <i class="fab fa-whatsapp"></i> 
+                            {{ perfil.telefono|default:"N/A" }}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <span class="info-label">Correo Electrónico</span>
+                        <div class="info-value">
+                            <i class="fas fa-envelope"></i> 
+                            {{ perfil.email|default:"N/A" }}
+                        </div>
+                    </div>
                 </div>
-                <h4 class="text-blue-400 text-[10px] font-black uppercase mb-3">Resumen de Perfil</h4>
-                <p class="text-gray-300 text-sm leading-relaxed italic relative z-10">
-                    "{{ perfil.descripcion_perfil }}"
-                </p>
+
+                <div class="mt-4 pt-3 border-top">
+                    <a href="{% url 'generar_pdf' %}" class="btn btn-primary btn-download">
+                        <i class="fas fa-file-pdf me-2"></i> Generar Hoja de Vida
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>lucide.createIcons();</script>
 {% endblock %}
