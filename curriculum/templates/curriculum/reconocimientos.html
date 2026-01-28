@@ -1,0 +1,63 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}Logros y Reconocimientos | Javier Parrales{% endblock %}
+
+{% block content %}
+<div class="fade-in px-4 py-12 max-w-7xl mx-auto">
+    <div class="mb-20">
+        <h2 class="text-5xl md:text-7xl font-black italic uppercase tracking-tighter text-[#1a1a1a] leading-none">
+            Logros & <br><span class="text-blue-600">Reconocimientos</span>
+        </h2>
+        <div class="h-2 w-32 bg-blue-500 mt-6 rounded-full"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {% for rec in reconocimientos %}
+        <div class="bg-white p-10 rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-700 group relative flex flex-col h-full transform hover:-translate-y-2">
+            
+            <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mb-10 shadow-inner group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 relative z-10">
+                <i data-lucide="trophy" class="w-10 h-10"></i>
+            </div>
+            
+            <div class="relative z-10 flex-grow">
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-600 mb-2 block">
+                    Mención Honorífica
+                </span>
+                <h3 class="text-2xl font-black uppercase text-gray-900 leading-tight mb-4 group-hover:text-blue-700 transition-colors">
+                    {{ rec.titulo }}
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed italic">
+                    "{{ rec.descripcion }}"
+                </p>
+            </div>
+            
+            <div class="mt-10 pt-8 border-t border-gray-100 flex justify-between items-center relative z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                    <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">
+                        Obtenido en: {{ rec.fecha }}
+                    </span>
+                </div>
+                
+                <div class="text-blue-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i data-lucide="award" size="24"></i>
+                </div>
+            </div>
+
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-50/50 rounded-full blur-3xl -z-10 group-hover:bg-blue-100 transition-colors"></div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-24 text-center bg-white rounded-[4rem] border-2 border-dashed border-blue-50">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-200">
+                <i data-lucide="medal" size="40"></i>
+            </div>
+            <h4 class="text-gray-400 font-bold uppercase tracking-widest text-xs">No hay registros de logros para Javier todavía</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

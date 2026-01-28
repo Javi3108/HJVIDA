@@ -1,0 +1,95 @@
+{% extends 'curriculum/base.html' %}
+{% load static %}
+
+{% block title %}Configurar PDF | Javier Parrales{% endblock %}
+
+{% block content %}
+<div class="fade-in px-4 py-12 max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-black uppercase text-gray-800 tracking-tighter">
+            CONFIGURAR <span class="text-blue-600">DOCUMENTO PDF</span>
+        </h2>
+        <p class="text-gray-400 font-bold text-[10px] uppercase tracking-[0.3em] mt-2">
+            Personaliza cada sección de tu hoja de vida profesional
+        </p>
+    </div>
+
+    <form action="{% url 'generar_cv' %}" method="get" target="_blank" class="space-y-5">
+        
+        <div class="flex justify-between items-center px-6 mb-2">
+            <span class="text-[10px] font-black uppercase text-gray-400 italic tracking-widest">Opciones de exportación</span>
+            <button type="button" onclick="toggleAllSections()" class="px-4 py-2 bg-gray-100 hover:bg-blue-600 hover:text-white rounded-full text-[9px] font-black uppercase tracking-widest transition-all shadow-sm">
+                Marcar / Desmarcar Todo
+            </button>
+        </div>
+
+        <label class="flex items-center justify-between p-6 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group">
+            <div class="flex items-center gap-5">
+                <div class="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-colors">
+                    <i data-lucide="briefcase" class="text-blue-600 group-hover:text-white" size="20"></i>
+                </div>
+                <span class="font-bold text-gray-700 uppercase text-xs tracking-wider">Incluir Experiencia Laboral</span>
+            </div>
+            <input type="checkbox" name="ver_experiencia" checked class="section-check w-6 h-6 rounded-lg border-gray-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+        </label>
+
+        <label class="flex items-center justify-between p-6 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group">
+            <div class="flex items-center gap-5">
+                <div class="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-colors">
+                    <i data-lucide="graduation-cap" class="text-blue-600 group-hover:text-white" size="20"></i>
+                </div>
+                <span class="font-bold text-gray-700 uppercase text-xs tracking-wider">Incluir Formación Académica</span>
+            </div>
+            <input type="checkbox" name="ver_educacion" checked class="section-check w-6 h-6 rounded-lg border-gray-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+        </label>
+
+        <label class="flex items-center justify-between p-6 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group">
+            <div class="flex items-center gap-5">
+                <div class="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-colors">
+                    <i data-lucide="award" class="text-blue-600 group-hover:text-white" size="20"></i>
+                </div>
+                <span class="font-bold text-gray-700 uppercase text-xs tracking-wider">Incluir Cursos y Capacitaciones</span>
+            </div>
+            <input type="checkbox" name="ver_cursos" checked class="section-check w-6 h-6 rounded-lg border-gray-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+        </label>
+
+        <label class="flex items-center justify-between p-6 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group">
+            <div class="flex items-center gap-5">
+                <div class="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-colors">
+                    <i data-lucide="trophy" class="text-blue-600 group-hover:text-white" size="20"></i>
+                </div>
+                <span class="font-bold text-gray-700 uppercase text-xs tracking-wider">Incluir Logros y Reconocimientos</span>
+            </div>
+            <input type="checkbox" name="ver_logros" checked class="section-check w-6 h-6 rounded-lg border-gray-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+        </label>
+
+        <label class="flex items-center justify-between p-6 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group">
+            <div class="flex items-center gap-5">
+                <div class="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-colors">
+                    <i data-lucide="code-2" class="text-blue-600 group-hover:text-white" size="20"></i>
+                </div>
+                <span class="font-bold text-gray-700 uppercase text-xs tracking-wider">Incluir Proyectos Académicos</span>
+            </div>
+            <input type="checkbox" name="ver_proyectos" checked class="section-check w-6 h-6 rounded-lg border-gray-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+        </label>
+
+        <div class="pt-10">
+            <button type="submit" class="w-full py-5 bg-blue-600 text-white font-black rounded-3xl uppercase tracking-[0.3em] text-[11px] hover:bg-[#1a1a1a] transition-all shadow-xl shadow-blue-100 active:scale-95 flex items-center justify-center gap-3">
+                <i data-lucide="download-cloud" size="18"></i>
+                Generar y Descargar CV
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleAllSections() {
+        const checkboxes = document.querySelectorAll('.section-check');
+        const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
+        checkboxes.forEach(cb => cb.checked = anyUnchecked);
+    }
+
+    // Inicialización de iconos Lucide
+    lucide.createIcons();
+</script>
+{% endblock %}

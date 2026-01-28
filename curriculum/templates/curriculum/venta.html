@@ -1,0 +1,78 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}Venta de Garage | Javier Parrales{% endblock %}
+
+{% block content %}
+<div class="fade-in px-4 py-12 max-w-7xl mx-auto">
+    <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div>
+            <span class="text-blue-600 font-black text-xs uppercase tracking-[0.4em] mb-4 block">Marketplace</span>
+            <h2 class="text-5xl md:text-7xl font-black italic uppercase tracking-tighter text-[#1a1a1a] leading-none">
+                Venta de <span class="text-emerald-500">Garage</span>
+            </h2>
+        </div>
+        <div class="bg-white px-8 py-4 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+                <i data-lucide="shopping-cart"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Contacto Directo</p>
+                <p class="text-sm font-black text-gray-800">WhatsApp de Javier</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {% for producto in productos %}
+        <div class="group bg-white rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-700 overflow-hidden flex flex-col h-full">
+            
+            <div class="aspect-square overflow-hidden bg-gray-50 relative">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-gray-200">
+                        <i data-lucide="package" size="64"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="absolute bottom-6 right-6">
+                    <div class="bg-[#1a1a1a] text-white px-6 py-3 rounded-2xl shadow-2xl transform group-hover:scale-110 transition-transform">
+                        <p class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Precio</p>
+                        <p class="text-xl font-black">${{ producto.precio }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-10 flex-grow flex flex-col">
+                <h3 class="text-2xl font-black uppercase text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+                    {{ producto.nombre }}
+                </h3>
+                
+                <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">
+                    {{ producto.descripcion|truncatewords:20 }}
+                </p>
+
+                <a href="https://wa.me/593{{ perfil.telefono }}?text=Hola%20Javier,%20me%20interesa%20un%20producto%20de%20tu%20Venta%20de%20Garage:%20{{ producto.nombre }}" 
+                   target="_blank" 
+                   class="flex items-center justify-center gap-3 w-full py-5 bg-gray-50 text-gray-900 font-black rounded-2xl uppercase text-[10px] tracking-[0.2em] group-hover:bg-emerald-500 group-hover:text-white transition-all duration-500">
+                    <i data-lucide="message-circle" size="18"></i>
+                    Preguntar Disponibilidad
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-32 text-center bg-white rounded-[5rem] border-2 border-dashed border-gray-100">
+            <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8 text-gray-200">
+                <i data-lucide="store" size="48"></i>
+            </div>
+            <h4 class="text-gray-400 font-black uppercase tracking-widest text-sm">Por ahora no hay nada en la Venta de Garage</h4>
+            <p class="text-gray-300 text-xs mt-2 uppercase font-bold tracking-widest">Vuelve pronto para ver novedades de Javier</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

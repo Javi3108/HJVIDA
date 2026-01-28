@@ -1,0 +1,90 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Javier Dev Admin{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); border-radius: 10px; display: flex; align-items: center; justify-center; font-weight: 900; color: white; font-size: 20px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
+            J
+        </div>
+        <h1 style="font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-size: 18px; background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            JAVIER <span style="color: white; -webkit-text-fill-color: white;">DEV</span>
+        </h1>
+    </a>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin_custom.css' %}">
+<style>
+    :root {
+        --primary: #3b82f6 !important;
+        --secondary: #06b6d4 !important;
+        --header-bg: #1e3a5f !important;
+    }
+
+    body {
+        background: linear-gradient(135deg, #0c1929 0%, #1a2332 100%) !important;
+        color: #e0e0e0 !important;
+    }
+
+    #header {
+        background: linear-gradient(135deg, #1e3a5f 0%, #0c1929 100%) !important;
+        border-bottom: 3px solid var(--primary) !important;
+    }
+    
+    .breadcrumbs {
+        background: rgba(30, 58, 95, 0.5) !important;
+        border-bottom: 2px solid rgba(59, 130, 246, 0.2) !important;
+    }
+
+    .module h2, .module caption, .column h2 {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+        color: white !important;
+    }
+
+    /* Enlaces del dashboard */
+    .module a:link, 
+    .module a:visited { 
+        color: var(--primary) !important;
+        font-weight: 600 !important;
+    }
+
+    .module a:hover {
+        color: var(--secondary) !important;
+    }
+
+    /* Botones principales */
+    .button, 
+    input[type="submit"], 
+    .submit-row input {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+    }
+
+    /* Usuario logueado */
+    #user-tools {
+        color: #06b6d4 !important;
+        font-weight: 600 !important;
+    }
+
+    #user-tools a {
+        color: #3b82f6 !important;
+    }
+
+    #user-tools a:hover {
+        color: #06b6d4 !important;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'admin_custom.css' %}">
+{% endblock %}

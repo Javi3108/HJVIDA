@@ -1,0 +1,304 @@
+/* ============================================
+   ADMIN PANEL PERSONALIZADO - JAVIER DEV
+   Tema: Azul Profesional
+   ============================================ */
+
+:root {
+    --primary-bg: #0c1929;
+    --secondary-bg: #1e3a5f;
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* ============================================
+   ESTRUCTURA PRINCIPAL
+   ============================================ */
+
+body, #container {
+    background: linear-gradient(135deg, #0c1929 0%, #1a2332 100%) !important;
+    color: var(--text-main) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+#header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0c1929 100%) !important;
+    border-bottom: 3px solid var(--accent-blue) !important;
+    color: white !important;
+    padding: 20px 40px !important;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2) !important;
+}
+
+#header a { 
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+#header a:hover { 
+    color: var(--accent-cyan) !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   BRANDING
+   ============================================ */
+
+#branding h1 {
+    font-weight: 900 !important;
+    font-style: normal !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+#branding h1::before {
+    content: '⚡ ';
+    -webkit-text-fill-color: #06b6d4 !important;
+}
+
+/* ============================================
+   BARRA LATERAL (NAV)
+   ============================================ */
+
+.nav-sidebar {
+    background: var(--secondary-bg) !important;
+    border-right: 2px solid var(--border-color) !important;
+}
+
+.nav-sidebar .module th {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: var(--accent-cyan) !important;
+    font-size: 10px !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    font-weight: 900 !important;
+    padding: 15px 10px !important;
+}
+
+.nav-sidebar .module a {
+    padding: 12px 15px !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-sidebar .module a:hover {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: var(--accent-blue) !important;
+    transform: translateX(5px);
+    border-left: 3px solid var(--accent-cyan);
+}
+
+/* ============================================
+   TABLAS Y LISTADOS
+   ============================================ */
+
+.results, #changelist {
+    background: var(--secondary-bg) !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    border: 2px solid var(--border-color) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+#changelist table thead th {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: var(--accent-cyan) !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    padding: 18px 15px !important;
+    letter-spacing: 2px !important;
+}
+
+#changelist table tbody tr {
+    background: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+#changelist table tbody tr:hover {
+    background: rgba(59, 130, 246, 0.08) !important;
+    transform: scale(1.01);
+}
+
+#changelist table tbody td a {
+    color: var(--accent-blue) !important;
+    font-weight: bold !important;
+    transition: color 0.3s ease !important;
+}
+
+#changelist table tbody td a:hover {
+    color: var(--accent-cyan) !important;
+}
+
+/* ============================================
+   FORMULARIOS Y BOTONES
+   ============================================ */
+
+.submit-row {
+    background: var(--secondary-bg) !important;
+    border-radius: 20px !important;
+    padding: 25px !important;
+    margin-top: 30px !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+input[type="submit"], 
+.button, 
+.addlink,
+button[type="submit"] {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    padding: 12px 24px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+}
+
+input[type="submit"]:hover, 
+.button:hover,
+.addlink:hover,
+button[type="submit"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5) !important;
+    filter: brightness(1.2) !important;
+}
+
+/* Campos de texto */
+input[type="text"], 
+input[type="password"], 
+input[type="email"],
+input[type="number"],
+textarea, 
+select {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 2px solid var(--border-color) !important;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 10px 15px !important;
+    transition: all 0.3s ease !important;
+}
+
+input[type="text"]:focus, 
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus, 
+select:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) !important;
+    outline: none !important;
+}
+
+/* ============================================
+   BREADCRUMBS
+   ============================================ */
+
+.breadcrumbs {
+    background: rgba(30, 58, 95, 0.5) !important;
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    font-weight: bold !important;
+    padding: 15px 40px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.breadcrumbs a { 
+    color: var(--accent-cyan) !important;
+    transition: color 0.3s ease !important;
+}
+
+.breadcrumbs a:hover {
+    color: var(--accent-blue) !important;
+}
+
+/* ============================================
+   MODULE CONTAINERS
+   ============================================ */
+
+.module {
+    background: var(--secondary-bg) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    margin-bottom: 25px !important;
+}
+
+.module h2, 
+.module caption {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%) !important;
+    color: white !important;
+    padding: 15px 20px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+/* ============================================
+   MENSAJES Y ALERTAS
+   ============================================ */
+
+.success {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-left: 4px solid #10b981 !important;
+    color: #6ee7b7 !important;
+}
+
+.warning {
+    background: rgba(251, 191, 36, 0.15) !important;
+    border-left: 4px solid #fbbf24 !important;
+    color: #fcd34d !important;
+}
+
+.error {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-left: 4px solid #ef4444 !important;
+    color: #fca5a5 !important;
+}
+
+/* ============================================
+   DASHBOARD
+   ============================================ */
+
+#content-main {
+    padding: 30px !important;
+}
+
+.dashboard .module table {
+    border-radius: 15px !important;
+    overflow: hidden !important;
+}
+
+/* ============================================
+   EFECTOS ADICIONALES
+   ============================================ */
+
+.deletelink {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.deletelink:hover {
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5) !important;
+}
+
+/* Animación de carga */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
