@@ -6,100 +6,83 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-    body {
-        background-color: #f4f7f6;
-        font-family: 'Poppins', sans-serif;
-    }
+    body { background-color: #f4f7f6; font-family: 'Poppins', sans-serif; }
     .profile-card {
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         overflow: hidden;
-        border: none;
         margin-top: 50px;
-        margin-bottom: 50px;
+        border: none;
     }
     .profile-img-container {
         background: #eef2f3;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 40px;
-        min-height: 400px;
+        padding: 30px;
     }
     .profile-img {
         width: 100%;
-        max-width: 280px;
-        height: 350px;
+        max-width: 250px;
+        height: 320px;
         object-fit: cover;
         border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         border: 5px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .info-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 700;
         color: #95a5a6;
-        margin-bottom: 2px;
-        display: block;
         letter-spacing: 1px;
+        display: block;
     }
     .info-value {
-        font-size: 1.05rem;
+        font-size: 1rem;
         color: #2c3e50;
-        font-weight: 500;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         display: flex;
         align-items: center;
         gap: 10px;
     }
-    .info-value i {
-        color: #2563eb;
-        width: 20px;
-    }
+    .info-value i { color: #2563eb; width: 20px; }
     .section-title {
         color: #2563eb;
         font-weight: 700;
-        position: relative;
-        padding-bottom: 10px;
-        margin-bottom: 30px;
+        border-bottom: 3px solid #2563eb;
+        display: inline-block;
+        margin-bottom: 25px;
     }
-    .section-title::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 60px;
-        height: 4px;
+    .btn-cv {
         background: #2563eb;
-        border-radius: 2px;
-    }
-    .btn-download {
-        background: #2563eb;
-        border: none;
-        padding: 12px 30px;
+        color: white;
+        padding: 12px 25px;
         border-radius: 10px;
+        text-decoration: none;
         font-weight: 600;
-        transition: all 0.3s ease;
+        transition: 0.3s;
+        display: inline-block;
+        border: none;
     }
-    .btn-download:hover {
+    .btn-cv:hover {
         background: #1d4ed8;
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        color: white;
     }
 </style>
 
-<div class="container">
+<div class="container mb-5">
     <div class="profile-card mx-auto col-lg-10">
         <div class="row g-0">
             <div class="col-md-5 profile-img-container">
                 {% if perfil.foto %}
-                    <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.nombres }}" class="profile-img">
+                    <img src="{{ perfil.foto.url }}" class="profile-img" alt="Foto de Perfil">
                 {% else %}
                     <div class="profile-img d-flex flex-column align-items-center justify-content-center bg-secondary text-white">
-                        <i class="fas fa-user fa-5x mb-3"></i>
-                        <span>SIN FOTO</span>
+                        <i class="fas fa-user-tie fa-4x"></i>
+                        <span class="mt-2">SIN FOTO</span>
                     </div>
                 {% endif %}
             </div>
@@ -108,63 +91,53 @@
                 <h2 class="section-title">Información Personal</h2>
                 
                 <div class="row">
-                    <div class="col-6">
-                        <span class="info-label">Nombres Completos</span>
+                    <div class="col-md-6">
+                        <span class="info-label">Nombres y Apellidos</span>
                         <div class="info-value">
-                            <i class="fas fa-user-circle"></i> 
-                            {{ perfil.nombres }} {{ perfil.apellidos }}
+                            <i class="fas fa-id-badge"></i> {{ perfil.nombres }} {{ perfil.apellidos }}
                         </div>
                     </div>
-                    <div class="col-6">
-                        <span class="info-label">Cédula de Identidad</span>
+                    <div class="col-md-6">
+                        <span class="info-label">Número de Cédula</span>
                         <div class="info-value">
-                            <i class="fas fa-id-card"></i> 
-                            {{ perfil.cedula|default:"N/A" }}
+                            <i class="fas fa-fingerprint"></i> {{ perfil.cedula|default:"N/A" }}
                         </div>
                     </div>
-
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <span class="info-label">Nacionalidad</span>
                         <div class="info-value">
-                            <i class="fas fa-globe-americas"></i> 
-                            {{ perfil.nacionalidad|default:"N/A" }}
+                            <i class="fas fa-flag"></i> {{ perfil.nacionalidad|default:"N/A" }}
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <span class="info-label">Estado Civil</span>
                         <div class="info-value">
-                            <i class="fas fa-heart"></i> 
-                            {{ perfil.estado_civil|default:"N/A" }}
+                            <i class="fas fa-user-friends"></i> {{ perfil.estado_civil|default:"N/A" }}
                         </div>
                     </div>
-
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <span class="info-label">Licencia de Conducir</span>
                         <div class="info-value">
-                            <i class="fas fa-car"></i> 
-                            {{ perfil.licencia_conducir|default:"N/A" }}
+                            <i class="fas fa-car-side"></i> {{ perfil.licencia_conducir|default:"N/A" }}
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <span class="info-label">Teléfono / WhatsApp</span>
                         <div class="info-value">
-                            <i class="fab fa-whatsapp"></i> 
-                            {{ perfil.telefono|default:"N/A" }}
+                            <i class="fab fa-whatsapp"></i> {{ perfil.telefono|default:"N/A" }}
                         </div>
                     </div>
-
                     <div class="col-12">
                         <span class="info-label">Correo Electrónico</span>
                         <div class="info-value">
-                            <i class="fas fa-envelope"></i> 
-                            {{ perfil.email|default:"N/A" }}
+                            <i class="fas fa-envelope"></i> {{ perfil.email|default:"N/A" }}
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-4 pt-3 border-top">
-                    <a href="{% url 'generar_pdf' %}" class="btn btn-primary btn-download">
-                        <i class="fas fa-file-pdf me-2"></i> Generar Hoja de Vida
+                    <a href="{% url 'generar_cv' %}" class="btn-cv">
+                        <i class="fas fa-file-download me-2"></i> Descargar Hoja de Vida (PDF)
                     </a>
                 </div>
             </div>
