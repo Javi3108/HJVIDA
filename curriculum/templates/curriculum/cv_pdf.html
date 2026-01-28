@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @page { size: A4; margin: 1cm; }
+        @page { size: A4; margin: 1.5cm; }
         body { font-family: 'Helvetica', Arial, sans-serif; color: #333; line-height: 1.2; font-size: 10pt; }
         
-        /* Encabezado original: Foto y Nombre alineados */
+        /* Cabecera original: Foto a la izquierda, Nombre al lado */
         .tabla-cabecera { width: 100%; border-bottom: 2px solid #1e40af; margin-bottom: 15px; }
-        .foto-perfil { width: 100px; height: 130px; border: 1px solid #ccc; object-fit: cover; }
-        .nombre-titulo { font-size: 24pt; color: #1e40af; font-weight: bold; text-transform: uppercase; margin: 0; }
+        .foto { width: 100px; height: 130px; border: 1px solid #ccc; object-fit: cover; }
+        .nombre-contenedor { vertical-align: middle; padding-left: 20px; }
+        .nombre { font-size: 24pt; color: #1e40af; font-weight: bold; text-transform: uppercase; margin: 0; }
 
         /* Secciones compactas */
         .titulo-seccion { 
@@ -17,53 +18,53 @@
             border-left: 5px solid #1e40af; margin-top: 15px; text-transform: uppercase;
         }
 
-        /* Datos personales sin espacios basura */
+        /* Datos personales sin espacios gigantes */
         .tabla-datos { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .tabla-datos td { padding: 3px 5px; border-bottom: 1px solid #eee; }
-        .etiqueta { font-weight: bold; width: 150px; color: #555; }
+        .label { font-weight: bold; width: 160px; color: #555; }
 
-        /* Items de experiencia y estudios */
-        .bloque-item { margin-top: 8px; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px; }
-        .cargo-titulo { font-weight: bold; font-size: 11pt; }
-        .empresa-sub { color: #1e40af; font-weight: bold; }
-        .fecha-rango { color: #666; font-style: italic; font-size: 9pt; }
+        /* Bloques de items (Experiencia, Educación, etc.) */
+        .bloque { margin-top: 8px; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px; }
+        .bold { font-weight: bold; }
+        .azul { color: #1e40af; font-weight: bold; }
+        .fecha { color: #666; font-style: italic; font-size: 9pt; }
     </style>
 </head>
 <body>
 
     <table class="tabla-cabecera">
         <tr>
-            <td style="width: 110px; padding-bottom: 10px;">
+            <td style="width: 110px;">
                 {% if perfil.foto %}
-                    <img src="{{ perfil.foto.path }}" class="foto-perfil">
+                    <img src="{{ perfil.foto.path }}" class="foto">
                 {% else %}
-                    <div style="width:100px; height:130px; background:#ddd;"></div>
+                    <div style="width:100px; height:130px; background:#eee; border:1px solid #ccc;"></div>
                 {% endif %}
             </td>
-            <td style="vertical-align: middle; padding-left: 15px;">
-                <h1 class="nombre-titulo">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
-                <div style="font-size: 12pt; color: #555;">Currículum Vitae</div>
+            <td class="nombre-contenedor">
+                <h1 class="nombre">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+                <div style="font-size: 12pt; color: #666;">Hoja de Vida Profesional</div>
             </td>
         </tr>
     </table>
 
     <div class="titulo-seccion">Datos Personales</div>
     <table class="tabla-datos">
-        <tr><td class="etiqueta">Cédula:</td><td>{{ perfil.cedula }}</td></tr>
-        <tr><td class="etiqueta">Nacionalidad:</td><td>{{ perfil.nacionalidad }}</td></tr>
-        <tr><td class="etiqueta">Estado Civil:</td><td>{{ perfil.estado_civil }}</td></tr>
-        <tr><td class="etiqueta">Teléfono:</td><td>{{ perfil.telefono }}</td></tr>
-        <tr><td class="etiqueta">Correo:</td><td>{{ perfil.email }}</td></tr>
+        <tr><td class="label">Cédula:</td><td>{{ perfil.cedula }}</td></tr>
+        <tr><td class="label">Nacionalidad:</td><td>{{ perfil.nacionalidad }}</td></tr>
+        <tr><td class="label">Estado Civil:</td><td>{{ perfil.estado_civil }}</td></tr>
+        <tr><td class="label">Teléfono:</td><td>{{ perfil.telefono }}</td></tr>
+        <tr><td class="label">Correo:</td><td>{{ perfil.email }}</td></tr>
     </table>
 
     {% if experiencias %}
     <div class="titulo-seccion">Experiencia Laboral</div>
     {% for exp in experiencias %}
-    <div class="bloque-item">
-        <div class="cargo-titulo">{{ exp.cargo }}</div>
-        <div class="empresa-sub">{{ exp.empresa }}</div>
-        <div class="fecha-rango">{{ exp.fecha_inicio|date:"Y" }} - {% if exp.fecha_fin %}{{ exp.fecha_fin|date:"Y" }}{% else %}Actualidad{% endif %}</div>
-        <div style="margin-top:2px;">{{ exp.descripcion }}</div>
+    <div class="bloque">
+        <div class="bold">{{ exp.cargo }}</div>
+        <div class="azul">{{ exp.empresa }}</div>
+        <div class="fecha">{{ exp.fecha_inicio|date:"Y" }} - {% if exp.fecha_fin %}{{ exp.fecha_fin|date:"Y" }}{% else %}Actualidad{% endif %}</div>
+        <div>{{ exp.descripcion }}</div>
     </div>
     {% endfor %}
     {% endif %}
@@ -71,21 +72,21 @@
     {% if estudios %}
     <div class="titulo-seccion">Formación Académica</div>
     {% for est in estudios %}
-    <div class="bloque-item">
-        <div class="cargo-titulo">{{ est.titulo }}</div>
-        <div class="empresa-sub">{{ est.institucion }}</div>
-        <div class="fecha-rango">{{ est.fecha_inicio|date:"Y" }} - {{ est.fecha_fin|date:"Y" }}</div>
+    <div class="bloque">
+        <div class="bold">{{ est.titulo }}</div>
+        <div class="azul">{{ est.institucion }}</div>
+        <div class="fecha">{{ est.fecha_inicio|date:"Y" }} - {{ est.fecha_fin|date:"Y" }}</div>
     </div>
     {% endfor %}
     {% endif %}
 
     {% if cursos %}
-    <div class="titulo-seccion">Cursos y Certificaciones</div>
+    <div class="titulo-seccion">Certificados y Cursos</div>
     {% for c in cursos %}
-    <div class="bloque-item">
-        <div class="cargo-titulo">{{ c.nombre_curso }}</div>
-        <div class="empresa-sub">{{ c.institucion }}</div>
-        <div class="fecha-rango">{{ c.fecha_realizacion|date:"d/m/Y" }} | {{ c.horas }} horas</div>
+    <div class="bloque">
+        <div class="bold">{{ c.nombre_curso }}</div>
+        <div class="azul">{{ c.institucion }}</div>
+        <div class="fecha">{{ c.fecha_realizacion|date:"d/m/Y" }} | {{ c.horas }} horas</div>
     </div>
     {% endfor %}
     {% endif %}
